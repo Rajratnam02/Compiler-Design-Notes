@@ -1,0 +1,143 @@
+Compiler
+    - Compiler is a translator which translates pure high level language into low level language
+    - HLL -> [Compiler] -> LLL
+    - Eg: Turbo C++, Dev C++, JavaC, Python
+    - Fortan was the first compiler ever built
+
+Machine language
+    - Binary
+    - Assembly  
+
+Translator
+    - It is a software that translates from one form of language to another form of language
+
+Translator
+    - Compiler
+    - Assembler
+
+Assembler
+    - It is a translator that translates assembly language into binary/ object code
+    - Assembly language is sometimes called as low level language
+    - Assembly -> [Assembler] -> Binary
+
+How a code is executed?
+    - Input HLL -> [Preprocessing] -> Pure HLL -> [Compiler] -> LLL -> [Assembler] -> Binary -> [Linker] -> Executable(.exe file)
+    - Any statement starting with '#' is used for preprocessing
+
+Phases of Compilation
+    - Lexical analysis -> Syntax analysis -> Semantics analysis -> Code generation -> Code Optimization -> Target Code generation
+    - Pure HLL -> [Lexical analysis] -> Stream of tokens -> [Syntax analysis] -> Parse Tree -> [Semantics analysis] -> Annotated Parse Tree -> [Code generation] -> 3 Address Code -> [Code Optimization] -> Optimized 3 Address Code -> [Target Code generation] -> Binary Code
+
+Lexical Analysis
+    - In Lexical analysis, we scan the entire code and divide it into stream of tokens i.e input is source code and output is stream of tokens
+    - Eg: int a = 10;
+          keyword variable operator constant operator
+
+Syntax Analysis
+    - In Syntax analysis, we verify the grammatical mistakes of source code
+    - To verify the Syntax of source code the laguage must be defined by context free grammer
+    - Syntax analyser takes the stream of tokens as input and generate the parse Tree
+
+Semantics analysis
+    - In Semantics analysis, the meaning of each and every sentence is verified by doing typechecking
+    - Syntax analysis just checks if the the operator is operating on required no of operand ot not, it doesnot check the type of each operand
+
+Intermediate code generation
+    - The source code is converted into Intermediate representation to make the code generation process simple and easy and also to achieve platform independence
+
+Code Optimization
+    - It means reducing the number of instructions without affecting the outcome of the source program 
+    - There are two types of code Optimization
+    - 1. Machine dependent Optimization 2. Machine independent Optimization
+
+Target Code generation
+    - In this phase the optimized source code is converted into assembly code 
+
+Symbol Tree 
+    - A symbol tree is an abstract data type to store the complete information of the source code
+    - Lexical analysis is the first phase that interact with symbol table
+    - It is initiated by Lexical Analysis phase
+    - Compiler is responsible to provide memory to Symbol table
+
+Information present in symbol table
+    - Name of variable, Type of each variable, Scope of lifetime of each variable, Address of each variable, No of functions
+
+Symbol table can be created by
+    - Array, Linked List, Hashmap, Tree, List
+
+Functions stored in symbol table
+    - Lookup(), Insert(), Delete(), Modify(), Update()
+
+Error Handler
+    - It is a module responsible for identifying different types of error on various phases of compiler
+
+Lexical analyser
+    - It is also known as lexer. It take pure HLL as input and divide it into stream of tokens.
+    - Tokens are group of character having logical meaning
+    - Source Code -> [Lexer] -> Stream of tokens
+
+    Lexene 
+        - The actual representation of stream of tokens is called Lexene
+
+    Construction of lexer
+        - Define the rule based on input stream
+        - These rule are the pattern recognizing tools
+        - Construct the regular expression for the defined rule
+        - Convert the regular expression into finite automata
+
+    - Lexer can be constructed using 2 tools
+    - 1. Hand Code 2. Lex 
+
+Parsing
+    - The process of identifying the rules to generate a given string from a given grammer
+
+Parse Tree
+    - The representation of derivation of the string from a given grammer in the form of a tree
+
+Types of grammer
+    - On the basis of ambiguity
+        1. Ambiguous Grammer
+            - More than one parse tree for any given string
+        2. Unambiguous Grammer
+            - Only one parse tree for any given string
+    
+    - On the basis of recursion
+        1. Left Recursion
+            - Same variable on lefthand side and left of righthand side 
+        2. Right Recursion
+            - Same variable on lefthand side and right of righthand side
+        
+    - On the basis of Determinism
+        1. Deterministic 
+            - The grammer without common prefix
+        2. Non Deterministic
+            - The grammer with common prefix
+
+Parser
+    1. TopDown Parser
+        - The process of generating parse tree from the root node and parsed toward children.
+        - Starting from start symbol and ending with a string
+        - TopDown parser uses left most derivation. 
+        - TopDown parser can be constructed from the grammer if it is free from ambiguity and left recursion.
+        - TopDown parser is used for grammer with less complexity.
+        - O(n^4)
+        - It has two types
+            1. With backtracking (Brute Force Method)
+            2. Without backtracking (Predictive Parser) "LL1 Parser", "Recursive Descent Parser"
+    
+    2. BottomUp Parser 
+
+Brute Force Method
+    - Whenever a  non-terminal is expanding first time go with the first alternative and compare with input string, if it doesnot match go with second alternative and compare with input string if it still doesn't match go with third alternative and so on and go with all alternative available. If any one alternative matches with input string then the parsing process is said to be successfully parse else it is called unsuccessfully parsed
+
+LL1 Parser
+    - LL(1) Leftmost derivation, Scan left to right for parsing, No of symbol taken into constructed
+    
+Input Buffer
+    - It is divided into cells and each cell is capable of holding one symbol at a time
+    - It contains only one string at any point of time
+
+Tape Header 
+    - The tape header always pointing to one symbol at a time
+    - The Symbol which is pointed by the tape header is called look ahead symbol
+    - The movement of tapeheader is from left to right
