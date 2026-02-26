@@ -315,3 +315,79 @@ Source Code → [Lexer] → Stream of Tokens
 - Points to one symbol at a time.
 - The pointed symbol is called Lookahead Symbol.
 - Moves from left to right.
+
+---
+
+# Construction of LL(1) Parse Table
+
+To construct an LL(1) parse table `M[X, a]`, use the following rules.
+
+## For Each Production
+
+```
+X → Y
+```
+
+### Step 1 — Using FIRST Set
+
+For every terminal symbol `a` in:
+
+```
+FIRST(Y) − { ε }
+```
+
+Add the production:
+
+```
+M[X, a] = X → Y
+```
+
+---
+
+### Step 2 — If ε is in FIRST(Y)
+
+If:
+
+```
+ε ∈ FIRST(Y)
+```
+
+Then for every terminal symbol `b` in:
+
+```
+FOLLOW(X)
+```
+
+Add the production:
+
+```
+M[X, b] = X → Y
+```
+
+---
+
+### Special Case — End Marker
+
+If `$ ∈ FOLLOW(X)`, also add:
+
+```
+M[X, $] = X → Y
+```
+
+---
+
+## Important Notes
+
+- FIRST(Y) determines placement for normal productions.
+- FOLLOW(X) is used only when Y can derive ε.
+- Each cell must contain at most one production for LL(1) grammar.
+- Multiple entries in a cell ⇒ Grammar is NOT LL(1).
+
+---
+
+## Quick Memory Trick
+
+```
+FIRST decides placement.
+FOLLOW is used only when ε is possible.
+```

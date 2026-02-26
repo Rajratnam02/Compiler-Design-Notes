@@ -141,3 +141,52 @@ Tape Header
     - The tape header always pointing to one symbol at a time
     - The Symbol which is pointed by the tape header is called look ahead symbol
     - The movement of tapeheader is from left to right
+
+Parse Stack
+    - It contains grammer from symbol including all variable terminals and dollar($).
+    - The grammer Symbol are pushed into the stack or pop out from stack depending on the matching between top symbol on stack and lookahead symbol
+
+Parse table
+    - It is 2-D array of order n*(m+1) where m is no of terminals and n is no of non terminals.
+    - Parse Tree contain all the productions which are used to derive the string
+
+Parsing process
+    - Push the start symbol into the stack
+    - Compare the topmost symbol of stack with lookahead symbol
+    - If matching occurs then pop, increase the input pointer and continue the process
+    - If matching doesnot occur then identify the production and push the production in reversed order into the stack
+    - Output all the production which are used for expanding the non terminals and continue the process
+
+LL1 Parsing algorithm
+    - let x be the grammer symbol present at the top of stack and a is the lookahead symbol 
+        - if x = a = $ then parsing is successfull
+        - if x = a != $ then pop the stack and increase the input pointer
+        - if x != a != $ and m[x,a] has the production x -> UVW then replace x by UVW in reversed order and continue the process
+    - Output all the production which are used for expanding all the non terminals 
+
+LL1 Grammer
+    - The grammer used to construct LL1 parser 
+    - The grammer whose parse table doesnot contain multiple entries in any cell
+
+Functions used to generate a parse table
+    - First()
+        - Set of all terminals which may be begining from any of the sentential form derived from alpha
+        - Rules to find first
+            1. If a is a terminal then first(a) = {a}
+            2. if a is a non-terminal and a derives e(episilon) then first(a) = {e}
+            3. If a is a non-terminal and there exist a non-null production a -> xyz
+                then first(a) = first(x) if x != e
+                     first(a) = first(x) u first(y) if x = e and y != e
+                     first(a) = first(x) u first(y) u first(z) if x = e and y = e
+    
+    - Follow()
+        - Set of all terminals which are followed to the right of first of any sentential form derived from alpha
+        -  Rules to find follow 
+            1. IF a is starting symbol then follow(a) = {$}
+            2. If S -> aAB and B != e then follow(A) = first(B)
+            3. If S -> aA then follow(A) = follow(S) 
+
+Construction of parse table rules
+    - For every production X -> Y repeat the following steps:
+        1. Add X -> Y in m[X,a] for every symbol 'a' in first(Y)
+        2. If first(Y) contain e, then add X -> Y in m[X,b] for every symbol 'b' in follow(X) 
