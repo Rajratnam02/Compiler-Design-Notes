@@ -64,7 +64,7 @@ Input HLL
 # Phases of Compilation
 
 ```
-Lexical Analysis
+→ Lexical Analysis
 → Syntax Analysis
 → Semantic Analysis
 → Intermediate Code Generation
