@@ -1,120 +1,428 @@
 # Compiler Design Notes
 
-## 1. Introduction to Compilers
-* **Compiler:** A translator that converts pure High-Level Language (HLL) into Low-Level Language (LLL).
-    * **Flow:** HLL -> [Compiler] -> LLL
-    * **Examples:** Turbo C++, Dev C++, JavaC, Python.
-    * **Fact:** Fortran was the first compiler ever built.
-* **Machine Language:** * Binary
-    * Assembly
-* **Translator:** Software that translates from one form of language to another.
-    * **Types:** Compiler, Assembler.
-* **Assembler:** A translator that converts Assembly language into Binary/Object code.
-    * **Flow:** Assembly -> [Assembler] -> Binary
-    * **Note:** Assembly language is sometimes referred to as Low-Level Language.
+---
+
+# Compiler
+
+- A compiler is a translator which translates pure High Level Language (HLL) into Low Level Language (LLL).
+
+```
+HLL → [Compiler] → LLL
+```
+
+- Examples: Turbo C++, Dev C++, JavaC, Python
+- FORTRAN was the first compiler ever built.
 
 ---
 
-## 2. Code Execution Flow
-How code moves from source to execution:
-1.  **Input HLL**
-2.  **Preprocessing:** Handles any statement starting with `#`.
-3.  **Pure HLL**
-4.  **Compiler**
-5.  **LLL**
-6.  **Assembler**
-7.  **Binary**
-8.  **Linker**
-9.  **Executable (.exe file)**
+# Machine Language
+
+- Binary
+- Assembly
 
 ---
 
-## 3. Phases of Compilation
-The compilation process follows these sequential steps:
+# Translator
 
-1.  **Lexical Analysis:** Scans code and divides it into a **Stream of Tokens**.
-    * *Example:* `int a = 10;` becomes `keyword`, `variable`, `operator`, `constant`, `operator`.
-2.  **Syntax Analysis:** Verifies grammatical mistakes using **Context-Free Grammar (CFG)**. Generates a **Parse Tree**.
-3.  **Semantic Analysis:** Performs **Type Checking** to verify the meaning of sentences (e.g., checking if operators have the correct operand types). Generates an **Annotated Parse Tree**.
-4.  **Intermediate Code Generation:** Converts source code into an intermediate representation for platform independence. Generates **3 Address Code**.
-5.  **Code Optimization:** Reduces the number of instructions without changing the outcome.
-    * *Types:* Machine-dependent and Machine-independent.
-6.  **Target Code Generation:** Converts optimized code into **Assembly/Binary Code**.
+- A translator is a software that translates from one form of language to another form of language.
+
+## Types of Translators
+- Compiler
+- Assembler
 
 ---
 
-## 4. Components of a Compiler
+# Assembler
 
-### Symbol Table
-An abstract data type used to store complete information about the source code.
-* **Interactions:** Initiated and first interacted with by Lexical Analysis.
-* **Memory:** The compiler is responsible for providing memory to the Symbol Table.
-* **Information Stored:** Variable Name, Type, Scope/Lifetime, Address, Number of Functions.
-* **Implementation:** Array, Linked List, Hashmap, Tree, List.
-* **Functions:** `Lookup()`, `Insert()`, `Delete()`, `Modify()`, `Update()`.
+- It is a translator that translates assembly language into binary/object code.
+- Assembly language is sometimes called low level language.
 
-### Error Handler
-A module responsible for identifying different types of errors across various phases of the compiler.
-
-### Lexical Analyzer (Lexer)
-* **Role:** Converts Pure HLL into a Stream of Tokens (logical groupings of characters).
-* **Lexeme:** The actual representation of a stream of tokens.
-* **Construction Steps:** 1. Define rules based on input stream.
-    2. Construct Regular Expressions for rules.
-    3. Convert Regular Expressions into Finite Automata.
-* **Tools:** Hand Code or Lex.
+```
+Assembly → [Assembler] → Binary
+```
 
 ---
 
-## 5. Parsing and Grammars
+# How a Code is Executed?
 
-### Key Definitions
-* **Parsing:** Identifying rules to generate a string from a grammar.
-* **Parse Tree:** A tree-based representation of the derivation of a string.
+```
+Input HLL
+→ [Preprocessing]
+→ Pure HLL
+→ [Compiler]
+→ LLL
+→ [Assembler]
+→ Binary
+→ [Linker]
+→ Executable (.exe file)
+```
 
-### Types of Grammar
-| Category | Types |
-| :--- | :--- |
-| **Ambiguity** | **Ambiguous** (Multiple parse trees) \| **Unambiguous** (One parse tree) |
-| **Recursion** | **Left Recursion** (Variable on LHS matches start of RHS) \| **Right Recursion** (Variable on LHS matches end of RHS) |
-| **Determinism**| **Deterministic** (No common prefix) \| **Non-Deterministic** (Common prefix exists) |
-
----
-
-## 6. Parsers
-
-### Top-Down Parser
-* Generates a parse tree from the root node down to the children.
-* Starts with a start symbol and ends with a string using **Left Most Derivation**.
-* Requires grammar to be free from **Ambiguity** and **Left Recursion**.
-* Complexity: $O(n^4)$.
-* **Types:**
-    1.  **With Backtracking:** (Brute Force Method) - Tries all alternatives until a match is found.
-    2.  **Without Backtracking:** (Predictive Parser) - Includes **LL(1) Parser** and **Recursive Descent Parser**.
+- Any statement starting with `#` is used for preprocessing.
 
 ---
 
-## 7. LL(1) Parsing Details
-**LL(1)** stands for: **L**eft-to-right scan, **L**eftmost derivation, **1** symbol lookahead.
+# Phases of Compilation
 
-### Components
-* **Input Buffer:** Holds the input string; divided into cells for symbols.
-* **Tape Header:** Points to the "lookahead symbol" and moves left to right.
-* **Parse Stack:** Stores grammar symbols, terminals, and the dollar sign ($).
-* **Parse Table:** A 2D array $[Non-Terminals \times Terminals]$.
+```
+Lexical Analysis
+→ Syntax Analysis
+→ Semantic Analysis
+→ Intermediate Code Generation
+→ Code Optimization
+→ Target Code Generation
+```
 
-### LL(1) Algorithm
-1.  Push the start symbol onto the stack.
-2.  Let `x` be the top of the stack and `a` be the lookahead symbol.
-3.  If `x = a = $`, parsing is successful.
-4.  If `x = a != $`, pop the stack and advance the input pointer.
-5.  If `x` is a non-terminal and `M[x, a]` contains a production `x -> UVW`, replace `x` on the stack with `W V U` (reversed order).
+Detailed Flow:
 
-### Table Generation Functions
-* **First():** The set of terminals that can begin a string derived from a non-terminal.
-* **Follow():** The set of terminals that can appear immediately to the right of a non-terminal.
+```
+Pure HLL
+→ [Lexical Analysis] → Stream of Tokens
+→ [Syntax Analysis] → Parse Tree
+→ [Semantic Analysis] → Annotated Parse Tree
+→ [Intermediate Code Generation] → 3 Address Code
+→ [Code Optimization] → Optimized 3 Address Code
+→ [Target Code Generation] → Binary Code
+```
 
-### Parse Table Construction Rules
-For every production $X \rightarrow Y$:
-1.  Add $X \rightarrow Y$ to $M[X, a]$ for every terminal `a` in **First(Y)**.
-2.  If **First(Y)** contains $\epsilon$ (epsilon), add $X \rightarrow Y$ to $M[X, b]$ for every terminal `b` in **Follow(X)**.
+---
+
+# Lexical Analysis
+
+- Scan entire source code.
+- Divide into stream of tokens.
+- Input: Source code
+- Output: Stream of tokens
+
+Example:
+
+```
+int a = 10;
+keyword  variable  operator  constant  operator
+```
+
+---
+
+# Syntax Analysis
+
+- Verify grammatical mistakes of source code.
+- Language must be defined by Context Free Grammar (CFG).
+- Input: Stream of tokens
+- Output: Parse Tree
+
+---
+
+# Semantic Analysis
+
+- Verify meaning of each sentence using type checking.
+- Syntax checks structure only.
+- Semantic checks correctness of types.
+
+---
+
+# Intermediate Code Generation
+
+- Convert source code into Intermediate Representation (IR).
+- Achieves platform independence.
+
+---
+
+# Code Optimization
+
+- Reduce number of instructions without affecting output.
+- Types:
+  1. Machine Dependent Optimization
+  2. Machine Independent Optimization
+
+---
+
+# Target Code Generation
+
+- Convert optimized intermediate code into assembly/machine code.
+
+---
+
+# Symbol Table
+
+- Abstract data structure used to store information about identifiers.
+- Initiated during Lexical Analysis phase.
+- Used and updated by later phases.
+- Compiler provides memory for symbol table.
+
+## Information Stored
+
+- Name of variable
+- Type
+- Scope/Lifetime
+- Address
+- Number of functions
+
+## Implementation
+
+- Array
+- Linked List
+- Hash Map
+- Tree
+- List
+
+## Functions
+
+- Lookup()
+- Insert()
+- Delete()
+- Modify()
+- Update()
+
+---
+
+# Error Handler
+
+- Module responsible for identifying different types of errors in various compiler phases.
+
+---
+
+# Lexical Analyser (Lexer)
+
+- Also known as Lexer.
+- Input: Pure HLL
+- Output: Stream of tokens
+
+```
+Source Code → [Lexer] → Stream of Tokens
+```
+
+## Token
+- Group of characters having logical meaning.
+
+## Lexeme
+- Actual representation of a token.
+
+---
+
+# Construction of Lexer
+
+1. Define rules for input stream.
+2. Construct Regular Expressions.
+3. Convert Regular Expressions into Finite Automata.
+
+## Tools
+1. Hand Coding
+2. Lex Tool
+
+---
+
+# Parsing
+
+- Process of identifying rules to generate a given string from a grammar.
+
+---
+
+# Parse Tree
+
+- Tree representation of derivation of a string from a grammar.
+
+---
+
+# Types of Grammar
+
+## On the Basis of Ambiguity
+
+### Ambiguous Grammar
+- More than one parse tree for a given string.
+
+### Unambiguous Grammar
+- Only one parse tree for a given string.
+
+---
+
+## On the Basis of Recursion
+
+### Left Recursion
+- A → Aα
+
+### Right Recursion
+- A → αA
+
+---
+
+## On the Basis of Determinism
+
+### Deterministic Grammar
+- Grammar without common prefix.
+
+### Non-Deterministic Grammar
+- Grammar with common prefix.
+
+---
+
+# Parser
+
+## 1. Top-Down Parser
+
+- Generate parse tree from root to leaves.
+- Start from start symbol.
+- Uses Leftmost Derivation.
+- Grammar must be free from ambiguity and left recursion.
+- Used for less complex grammars.
+- Time Complexity: O(n⁴)
+
+### Types
+1. With Backtracking (Brute Force Method)
+2. Without Backtracking (Predictive Parser)
+   - LL(1) Parser
+   - Recursive Descent Parser
+
+---
+
+## 2. Bottom-Up Parser
+
+- Build parse tree from leaves to root.
+
+---
+
+# Brute Force Method
+
+- Expand non-terminal with first alternative.
+- If mismatch, try next alternative.
+- If any alternative matches → Successfully parsed.
+- Else → Parsing fails.
+
+---
+
+# LL(1) Parser
+
+- L → Left to Right scanning
+- L → Leftmost derivation
+- (1) → One lookahead symbol
+
+---
+
+# Input Buffer
+
+- Divided into cells.
+- Each cell holds one symbol.
+- Contains only one string at a time.
+
+---
+
+# Tape Header
+
+- Points to one symbol at a time.
+- Pointed symbol is called Lookahead Symbol.
+- Moves from left to right.
+
+---
+
+# Parse Stack
+
+- Contains grammar symbols including terminals, non-terminals, and `$`.
+- Symbols are pushed or popped depending on matching.
+
+---
+
+# Parse Table
+
+- 2-D array of size n × (m+1)
+  - n = number of non-terminals
+  - m = number of terminals
+- Contains productions used to derive the string.
+
+---
+
+# Parsing Process
+
+1. Push start symbol into stack.
+2. Compare top of stack with lookahead symbol.
+3. If match → pop and move input pointer.
+4. If not match → use parse table production and push RHS in reverse order.
+5. Output productions used.
+
+---
+
+# LL(1) Parsing Algorithm
+
+Let:
+- x = top of stack
+- a = lookahead symbol
+
+- If x = a = $ → Parsing successful
+- If x = a ≠ $ → Pop stack and move input pointer
+- If x ≠ a and m[x,a] = X → UVW  
+  Replace X with UVW in reverse order
+
+Output all productions used.
+
+---
+
+# LL(1) Grammar
+
+- Grammar used to construct LL(1) parser.
+- Parse table must not contain multiple entries in any cell.
+
+---
+
+# FIRST()
+
+- Set of terminals that begin strings derived from α.
+
+## Rules
+
+1. If a is terminal → FIRST(a) = {a}
+2. If A derives ε → ε ∈ FIRST(A)
+3. If A → XYZ
+   - If X ≠ ε → FIRST(A) = FIRST(X)
+   - If X = ε → FIRST(A) = FIRST(X) ∪ FIRST(Y)
+   - Continue if multiple ε
+
+---
+
+# FOLLOW()
+
+- Set of terminals that appear immediately to the right of A.
+
+## Rules
+
+1. If A is start symbol → FOLLOW(A) = {$}
+2. If S → aAB and B ≠ ε → FOLLOW(A) = FIRST(B)
+3. If S → aA → FOLLOW(A) = FOLLOW(S)
+
+---
+
+# Construction of LL(1) Parse Table
+
+For every production:
+
+```
+X → Y
+```
+
+### Step 1
+
+For every terminal `a ∈ FIRST(Y) − {ε}`:
+
+```
+M[X, a] = X → Y
+```
+
+### Step 2
+
+If `ε ∈ FIRST(Y)`:
+
+For every `b ∈ FOLLOW(X)`:
+
+```
+M[X, b] = X → Y
+```
+
+If `$ ∈ FOLLOW(X)`:
+
+```
+M[X, $] = X → Y
+```
+
+---
+
+## Important
+
+- If any cell contains multiple entries → Grammar is NOT LL(1).
+- FIRST decides placement.
+- FOLLOW is used only when ε is present.
